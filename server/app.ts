@@ -15,6 +15,12 @@ app.use(
     origin: process.env.ORIGIN,
   })
 );
+
+// ROUTES
+import userRouter from "./routes/user.route";
+
+app.use("/api/v1", userRouter);
+
 // TESTING API
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ success: true, message: "API is working" });
