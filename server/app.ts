@@ -20,10 +20,10 @@ app.use(
 
 // ROUTES
 import userRouter from "./routes/user.route";
+import orderRouter from "./routes/order.route";
 import courseRouter from "./routes/course.route";
 
-app.use("/api/v1", userRouter);
-app.use("/api/v1", courseRouter);
+app.use("/api/v1", userRouter, orderRouter, courseRouter);
 
 // TESTING API
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {

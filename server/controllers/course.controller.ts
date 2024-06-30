@@ -9,6 +9,7 @@ import { createCourse } from "../services/course.service";
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import sendMail from "../utils/sendMail";
+import UserRequest from "../@types/custom" ;
 
 // UPLOAD COURSE
 export const uploadCourse = CatchAsyncError(
