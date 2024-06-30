@@ -1,20 +1,19 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { IUser } from "./user.model";
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 require("dotenv").config();
 
 interface IComment extends Document {
-  user: object;
-  comment: string;
-  commentReplies?: IComment[];
+  user: IUser;
+  question: string;
+  questionReplies?: IComment[];
 }
 
 interface IReview extends Document {
-  user: object;
+  user: IUser;
   rating: number;
   comment: string;
-  commentReplies: IComment[];
+  commentReplies?: IComment[];
 }
 
 interface ILink extends Document {
@@ -59,6 +58,7 @@ const reviewSchema: Schema<IReview> = new mongoose.Schema({
     default: 0,
   },
   comment: String,
+  commentReplies: [Object],
 });
 
 const linkSchema = new Schema<ILink>({
@@ -68,13 +68,12 @@ const linkSchema = new Schema<ILink>({
 
 const commentSchema = new Schema<IComment>({
   user: Object,
-  comment: String,
-  commentReplies: [Object],
+  question: String,
+  questionReplies: [Object],
 });
 
 const courseDataSchema = new Schema<ICourseData>({
   videoUrl: String,
-  videoThumbnail: Object,
   title: String,
   videoSection: String,
   description: String,
@@ -102,11 +101,9 @@ const courseSchema = new Schema<ICourse>({
   },
   thumbnail: {
     public_id: {
-      required: true,
       type: String,
     },
     url: {
-      required: true,
       type: String,
     },
   },
