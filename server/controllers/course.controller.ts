@@ -9,7 +9,8 @@ import { createCourse } from "../services/course.service";
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import sendMail from "../utils/sendMail";
-import UserRequest from "../@types/custom" ;
+import UserRequest from "../@types/custom";
+import NotificationModel from "../models/notification.model";
 
 // UPLOAD COURSE
 export const uploadCourse = CatchAsyncError(
@@ -196,10 +197,15 @@ export const addQuestion = CatchAsyncError(
         questionReplies: [],
       };
 
-      console.log(newQuestion);
-
       // add this question to our course content
       courseContent.questions.push(newQuestion);
+
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Question Received",
+        message: `You have new question in ${courseContent.title}`,
+      });
+
       await course?.save();
 
       res.status(200).json({
@@ -261,6 +267,11 @@ export const addAnswer = CatchAsyncError(
 
       if (req.user?._id === question.user._id) {
         // create a notification
+        await NotificationModel.create({
+          user: req.user?._id,
+          title: "New Question Reply Received",
+          message: `You have a new question reply in ${courseContent.title}`,
+        });
       } else {
         const data = {
           name: question.user.name,

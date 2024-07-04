@@ -22,8 +22,9 @@ app.use(
 import userRouter from "./routes/user.route";
 import orderRouter from "./routes/order.route";
 import courseRouter from "./routes/course.route";
+import notificationRouter from "./routes/notification.route";
 
-app.use("/api/v1", userRouter, orderRouter, courseRouter);
+app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRouter);
 
 // TESTING API
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {

@@ -1,20 +1,15 @@
 import ejs from "ejs";
 import path from "path";
-import mongoose from "mongoose";
-import cloudinary from "cloudinary";
-import { redis } from "../utils/redis";
-import CourseModel from "../models/course.model";
-import ErrorHandler from "../utils/ErrorHandler";
-import { createCourse } from "../services/course.service";
-import { NextFunction, Request, Response } from "express";
-import { CatchAsyncError } from "../middleware/catchAsyncError";
 import sendMail from "../utils/sendMail";
 import UserRequest from "../@types/custom";
-import OrderModel, { IOrder } from "../models/order.model";
 import userModel from "../models/user.model";
+import { IOrder } from "../models/order.model";
 import courseModel from "../models/course.model";
+import ErrorHandler from "../utils/ErrorHandler";
 import { newOrder } from "../services/order.service";
+import { NextFunction, Request, Response } from "express";
 import NotificationModel from "../models/notification.model";
+import { CatchAsyncError } from "../middleware/catchAsyncError";
 
 // CREATE ORDER
 export const createOrder = CatchAsyncError(
