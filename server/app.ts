@@ -21,10 +21,20 @@ app.use(
 // ROUTES
 import userRouter from "./routes/user.route";
 import orderRouter from "./routes/order.route";
+import layoutRouter from "./routes/layout.route";
 import courseRouter from "./routes/course.route";
+import analyticsRouter from "./routes/analytics.route";
 import notificationRouter from "./routes/notification.route";
 
-app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRouter);
+app.use(
+  "/api/v1",
+  userRouter,
+  orderRouter,
+  layoutRouter,
+  courseRouter,
+  analyticsRouter,
+  notificationRouter
+);
 
 // TESTING API
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
