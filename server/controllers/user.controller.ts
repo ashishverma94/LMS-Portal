@@ -11,7 +11,7 @@ import sendMail from "../utils/sendMail";
 import UserRequest from "../@types/custom";
 import ErrorHandler from "../utils/ErrorHandler";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById, updateUserRoleService } from "../services/user.service";
 import userModel, { IUser } from "../models/user.model";
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
@@ -382,12 +382,35 @@ export const updateProfilePicture = CatchAsyncError(
 
       await user?.save();
       await redis.set(userId, JSON.stringify(user));
-      
+
       res.status(201).json({
         success: true,
         user,
       });
     } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// GET ALL USERS ( ADMIN ONLY )
+export const getAllUsers = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllUsersService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// UPDATE USER ROLE ( ADMIN ONLY )
+export const updateUserRole = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id, role } = req.body;
+      updateUserRoleService(res, id, role);
+    } catch (error:any) {
       return next(new ErrorHandler(error.message, 400));
     }
   }

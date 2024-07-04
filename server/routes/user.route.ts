@@ -3,15 +3,17 @@ import {
   socialAuth,
   logoutUser,
   getUserInfo,
+  getAllUsers,
   activateUser,
   updatePassword,
   updateUserInfo,
+  updateUserRole,
   registrationUser,
   updateAccessToken,
   updateProfilePicture,
 } from "../controllers/user.controller";
 import express from "express";
-import { isAuthenticated } from "../middleware/auth";
+import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
 const userRouter = express.Router();
 
@@ -36,6 +38,18 @@ userRouter.put(
   "/update-user-avatar",
   isAuthenticated as any,
   updateProfilePicture as any
+);
+userRouter.get(
+  "/get-users",
+  isAuthenticated as any,
+  authorizeRoles("admin"),
+  getAllUsers as any
+);
+userRouter.put(
+  "/update-user",
+  isAuthenticated as any,
+  authorizeRoles("admin"),
+  updateUserRole as any
 );
 
 export default userRouter;

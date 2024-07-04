@@ -8,6 +8,7 @@ import {
   getSingleCourse,
   getCourseByUser,
   addReplyToReview,
+  getAllCourses1,
 } from "../controllers/course.controller";
 import express from "express";
 import { isAuthenticated, authorizeRoles } from "../middleware/auth";
@@ -41,6 +42,12 @@ courseRouter.put(
   isAuthenticated as any,
   authorizeRoles("admin"),
   addReplyToReview as any
+);
+courseRouter.get(
+  "/get-courses1",
+  isAuthenticated as any,
+  authorizeRoles("admin"),
+  getAllCourses1 as any
 );
 
 export default courseRouter;

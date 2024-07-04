@@ -5,7 +5,7 @@ import cloudinary from "cloudinary";
 import { redis } from "../utils/redis";
 import CourseModel from "../models/course.model";
 import ErrorHandler from "../utils/ErrorHandler";
-import { createCourse } from "../services/course.service";
+import { createCourse, getAllCoursesService } from "../services/course.service";
 import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import sendMail from "../utils/sendMail";
@@ -408,6 +408,17 @@ export const addReplyToReview = CatchAsyncError(
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// GET ALL COURSES ( ADMIN ONLY )
+export const getAllCourses1 = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllCoursesService(res);
+    } catch (error:any) {
+      return next(new ErrorHandler(error.message, 400));
     }
   }
 );

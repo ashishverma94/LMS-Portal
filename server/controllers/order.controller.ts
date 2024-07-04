@@ -6,7 +6,7 @@ import userModel from "../models/user.model";
 import { IOrder } from "../models/order.model";
 import courseModel from "../models/course.model";
 import ErrorHandler from "../utils/ErrorHandler";
-import { newOrder } from "../services/order.service";
+import { getAllOrdersService, newOrder } from "../services/order.service";
 import { NextFunction, Request, Response } from "express";
 import NotificationModel from "../models/notification.model";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
@@ -88,6 +88,17 @@ export const createOrder = CatchAsyncError(
     } catch (error: any) {
       console.log(error);
       return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// GET ALL ORDERS ( ADMIN ONLY )
+export const getAllOrders = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllOrdersService(res);
+    } catch (error:any) {
+      return next(new ErrorHandler(error.message, 400));
     }
   }
 );
